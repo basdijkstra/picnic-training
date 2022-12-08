@@ -10,6 +10,8 @@ class Account:
     def withdraw(self, amount):
         if self.account_type == 'savings' and amount > self.balance:
             raise ValueError(f'You cannot overdraw on a savings account. Current balance: {self.balance}')
+        self.balance -= amount
+
 
 # Exercise 1.1
 # Write a test_deposit() method that does the following:
