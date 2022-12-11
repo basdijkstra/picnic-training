@@ -7,6 +7,12 @@ from appium import webdriver
 # with the SauceLabs demo app loaded. Also supply useful values
 # for the build and test names. Run your test to see if it works.
 
+# Exercise 2
+# Move the fixture to a separate file conftest.py in the 'exercises' folder
+# This should make the fixture available to all modules, saving us from
+# having to copy and paste it in all exercises.
+# Test if this still works!
+
 @pytest.fixture
 def driver():
     caps = {

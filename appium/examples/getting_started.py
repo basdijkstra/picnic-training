@@ -1,37 +1,33 @@
 import time
+import uuid
 
 import pytest
 from appium import webdriver
-from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
 @pytest.fixture
-def appium_driver():
+def driver():
     caps = {
-        'platformName': "Android",
-        # 'appium:deviceName': "Android GoogleAPI Emulator",
-        'appium:deviceName': "emulator-5554",
-        'appium:platformVersion': "10.0",
-        'appium:automationName': "UiAutomator2",
-        # 'appium:app': "Android-MyDemoAppRN.1.3.0.build-244.apk",
-        # 'sauce:options': {
-        #     'build': 'Test build',
-        #     'name': 'Yet another demo test'
-        # }
+        'platformName': 'Android',
+        'appium:app': 'storage:filename=Android-MyDemoAppRN.1.3.0.build-244.apk',
+        'appium:automationName': 'UiAutomator2',
+        'sauce:options': {
+            'appiumVersion': '1.22.1',
+            'build': str(uuid.uuid4()),
+            'name': 'Connectivity test'
+        }
     }
 
-    url = 'http://127.0.0.1:4723/wd/hub'
+    url = 'https://basdijkstra:22105028-d602-4896-b824-d522da578fa9@ondemand.eu-central-1.saucelabs.com:443/wd/hub'
     driver = webdriver.Remote(url, caps)
     yield driver
     driver.quit()
 
 
-def test_connectivity(appium_driver):
-
-    # appium_driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'open menu').click()
-    appium_driver.find_element(AppiumBy.XPATH, '(//android.view.ViewGroup[@content-desc="store item"])[1]').click()
+def test_connectivity(driver):
+    pass
 
 
 def naive_wait_and_click():
