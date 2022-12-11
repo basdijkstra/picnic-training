@@ -1,3 +1,4 @@
+import time
 import pytest
 from appium import webdriver
 from appium.webdriver.common.appiumby import AppiumBy
@@ -7,7 +8,7 @@ from selenium.webdriver.common.by import By
 # Copy the required settings from the previous exercise into this fixture
 
 @pytest.fixture
-def driver():
+def appium_driver():
     caps = {
         # COPY FROM THE PREVIOUS EXERCISE
     }
@@ -22,17 +23,25 @@ def driver():
 # For now, it's OK to put time.sleep(5) between steps to make sure
 # that the app loading times are dealt with. We'll work on that soon :)
 
-def test_purchase_two_backpacks(driver):
+def test_purchase_two_backpacks(appium_driver):
+
+    time.sleep(10)
 
     # DONE: Go to the backpack item details
-    xpath_backpack = '(//android.view.ViewGroup[@content-desc="store item"])[1]/android.view.ViewGroup[1]/android.widget.ImageView'
-    driver.find_element(By.XPATH, xpath_backpack).click()
+    xpath_backpack = '(//android.view.ViewGroup[@content-desc="store item"])[1]'
+    appium_driver.find_element(By.XPATH, xpath_backpack).click()
+
+    time.sleep(5)
 
     # DONE: We want to order two backpacks, so tap the '+' button
-    driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'counter plus button').click()
+    appium_driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'counter plus button').click()
+
+    time.sleep(5)
 
     # DONE: Add our two backpacks to the cart
-    driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'Add To Cart button').click()
+    appium_driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'Add To Cart button').click()
+
+    time.sleep(5)
 
     # TO DO: Can you find out how to click the device 'Back' button?
 
