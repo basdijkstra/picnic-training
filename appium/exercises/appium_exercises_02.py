@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 
 # Exercise 2.1
 # Copy the required settings from the previous exercise into this fixture
+# (or remove this one if the conftest.py worked for you)
 
 @pytest.fixture
 def appium_driver():

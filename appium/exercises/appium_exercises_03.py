@@ -5,11 +5,12 @@ import pytest
 from appium import webdriver
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
 
 # Exercise 3.1
 # Copy the required settings from the previous exercise into this fixture
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as ec
+# (or remove this one if the conftest.py worked for you)
 
 @pytest.fixture
 def appium_driver():
