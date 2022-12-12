@@ -17,7 +17,7 @@ from appium import webdriver
 def driver():
     caps = {
         # GET THESE FROM SAUCELABS
-        # REMOVE THE DEVICE NAME AND PLATFORM VERSION
+        # REMOVE THE DEVICE NAME
         # TO INCREASE CHANCES OF FINDING AN AVAILABLE DEVICE
     }
 
