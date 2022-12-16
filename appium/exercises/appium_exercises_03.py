@@ -1,92 +1,51 @@
-import time
 import uuid
-
 import pytest
 from appium import webdriver
-from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as ec
+from pages.catalog_page import CatalogPage
+from pages.product_detail_page import ProductDetailPage
+from pages.cart_overview_page import CartOverviewPage
+from pages.login_page import LoginPage
+from pages.checkout_page import CheckoutPage
 
-# Exercise 3.1
-# Copy the required settings from the previous exercise into this fixture
-# (or remove this one if the conftest.py worked for you)
 
 @pytest.fixture
 def appium_driver():
-    caps = {
-        # COPY FROM THE PREVIOUS EXERCISE
-    }
+    caps = {}
+    caps['platformName'] = 'Android'
+    caps['appium:app'] = 'storage:filename=Android-MyDemoAppRN.1.3.0.build-244.apk'  # The filename of the mobile app
+    caps['appium:deviceName'] = 'Google Pixel 6 Pro GoogleAPI Emulator'
+    caps['appium:platformVersion'] = '12.0'
+    caps['appium:automationName'] = 'UiAutomator2'
+    caps['sauce:options'] = {}
+    caps['sauce:options']['appiumVersion'] = '1.22.1'
+    caps['sauce:options']['build'] = str(uuid.uuid4())
+    caps['sauce:options']['name'] = 'Let us test this configuration'
 
-    url = 'COPY FROM THE PREVIOUS EXERCISE'
+    url = "https://basdijkstra:22105028-d602-4896-b824-d522da578fa9@ondemand.eu-central-1.saucelabs.com:443/wd/hub"
     driver = webdriver.Remote(url, caps)
     yield driver
     driver.quit()
 
-# Exercise 3.2
-# Improve our test code by replacing all the time.sleep(5) statements
-# with explicit waits. Make sure you wait for the right element state!
-
-# Exercise 3.3
-# Extract the synchronization into helper methods for improved reusability
-
 
 def test_purchase_two_backpacks(appium_driver):
 
-    time.sleep(10)
-
     # DONE: Go to the backpack item details
-    xpath_backpack = '(//android.view.ViewGroup[@content-desc="store item"])[1]'
-    WebDriverWait(appium_driver, 120).until(ec.element_to_be_clickable((AppiumBy.XPATH, xpath_backpack)))
-    appium_driver.find_element(AppiumBy.XPATH, xpath_backpack).click()
-
-    time.sleep(5)
+    CatalogPage(appium_driver).select_first_product()
 
     # We want to order two backpacks, so tap the '+' button
-    appium_driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'counter plus button').click()
-
-    time.sleep(5)
-
     # Add our two backpacks to the cart
-    appium_driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'Add To Cart button').click()
-
-    time.sleep(5)
-
-    # Can you find out how to click the device 'Back' button?
-    appium_driver.back()
-
-    time.sleep(5)
-
-    # Check that the number of items in the cart is equal to 2
-    xpath_number_of_items_in_cart = '//android.view.ViewGroup[@content-desc="cart badge"]/android.widget.TextView'
-    assert appium_driver.find_element(By.XPATH, xpath_number_of_items_in_cart).text == '2'
-
-    time.sleep(5)
+    pdp = ProductDetailPage(appium_driver)
+    pdp.add_items_to_cart()
+    assert pdp.get_number_of_items_in_cart() == '2'
 
     # Click on the shopping cart icon to start the checkout process
-    appium_driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'cart badge').click()
-
-    time.sleep(5)
+    pdp.open_cart()
 
     # Click on the Proceed to checkout button
-    appium_driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'Proceed To Checkout button').click()
+    CartOverviewPage(appium_driver).proceed_to_checkout()
 
-    time.sleep(5)
-
-    # fill in username bob@example.com
-    appium_driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'Username input field').send_keys('bob@example.com')
-
-    time.sleep(5)
-
-    #  fill in password 10203040
-    appium_driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'Password input field').send_keys('10203040')
-
-    time.sleep(5)
-
-    # Click on the Login button
-    appium_driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'Login button').click()
-
-    time.sleep(5)
+    # Login using existing user credentials
+    LoginPage(appium_driver).login_as('bob@example.com', '10203040')
 
     # assert that we're on the checkout screen
-    assert appium_driver.find_element(AppiumBy.ACCESSIBILITY_ID, 'checkout address screen').is_displayed() is True
+    assert CheckoutPage(appium_driver).is_loaded() is True
