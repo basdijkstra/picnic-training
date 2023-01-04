@@ -59,12 +59,10 @@ def test_is_car_recent(make, model, year, is_recent):
 #     my_car = car.Car("Ford", "Focus", 2015)
 #     assert my_car.is_a_recent_car() is True
 
-@pytest.fixture
-def car():
-    car = Car('Ford', 'Focus', 'blue', 2022)
-    yield car
-    print(car.get_car_info())
+@pytest.mark.usefixtures('banana')
+def test_car_paint_job(banana):
+    banana.color = 'red'
 
 
-def test_car_paint_job(car):
-    car.color = 'red'
+def test_another_test(banana):
+    pass

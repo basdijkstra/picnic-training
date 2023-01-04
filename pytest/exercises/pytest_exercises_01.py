@@ -37,3 +37,5 @@ class Account:
 # Exercise 1.4
 # Extend the previous test so that it also checks the message
 # raised by the error, and that the balance is intact (i.e, is still equal to 1000)
+def test_test():
+    pass

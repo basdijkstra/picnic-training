@@ -10,4 +10,5 @@ Feature: Implementing our first behave specifications
       | john     | demo      | successful   |
       | susan    | incorrect | unsuccessful |
       | jimmy    | demo      | successful   |
+      | bob      | incorrect | unsuccessful |
 
